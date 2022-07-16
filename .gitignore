@@ -1,4 +1,4 @@
 .DS_Store
 node_modules
-package-lock
-package
+package 18.35.12.json
+package-lock 18.35.12.json
