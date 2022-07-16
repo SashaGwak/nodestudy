@@ -1,7 +1,7 @@
 // EventEmitter 객체 사용법 정리 
 const EventEmitter = require('events');
 
-const myEmitter = new EventEmitter();
+// const myEmitter = new EventEmitter();
 
 myEmitter.on('test', () => {
     console.log('success!');
@@ -22,7 +22,7 @@ myEmitter.emit('test');
 // 예시
 const EventEmitter = require('events');
 
-const myEmitter = new EventEmitter();
+// const myEmitter = new EventEmitter();
 
 myEmitter.once('test', () => {
     console.log('Success!');
