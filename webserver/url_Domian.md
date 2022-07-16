@@ -14,7 +14,6 @@ https://example.com/business/mart/item?category=14&id=2965
     - 여기서는 category 항목의 값을 14, id 항목의 값을 2965로 지정 
     - 각 항목을 구분할 때는 &를 써준다 
 
-<hr>
 ### Domain의 계층
 Domain Name System이라고 하는 체계를 바탕으로 생성되는 문자열 이름 
 1. root domain 
@@ -27,9 +26,8 @@ Domain Name System이라고 하는 체계를 바탕으로 생성되는 문자열
     -naver, daum, google 등 서비스를 대표하는 이름 
 4. WWW(Third-Level 도메인)
 5. test.www.naver.com(Fourth-Level 도메인)
-> 하지만 실제 서비스에서는 보통 Third-level 정도까지만 사용하는 경우가 많다
+>하지만 실제 서비스에서는 보통 Third-level 정도까지만 사용하는 경우가 많다
 
-<hr>
 ### Domain Name Resolution
 <img src="DNR.jpg" width="450px" height="400px">
 
@@ -37,4 +35,4 @@ Domain Name System이라고 하는 체계를 바탕으로 생성되는 문자열
 [자세한 내용 참고 사이트](https://aws.amazon.com/ko/route53/what-is-dns/)
 * 하지만 매번 접속할 때마다 1~9까지의 단계가 발생하는 것은 아님
 * 왜냐하면 한번 IP 주소를 받은 후에는 OS가 그 IP 주소를 보통 별도로 저장해두고 계속 사용하기 때문에!
-*또한 자주 사용하는 도메인 네임에 대해서는 별도로 외부에 요청할 필요가 없도록 cache로 관리하는 경우가 많다
+* 또한 자주 사용하는 도메인 네임에 대해서는 별도로 외부에 요청할 필요가 없도록 cache로 관리하는 경우가 많다
