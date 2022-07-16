@@ -2,7 +2,10 @@
 const http = require('http');
 
 let server = http.createServer(function (request, response) {
+    console.log(request.url);
+    // url의 path 보여줌
     response.end('<h1>Hello world!</h1>');
+    // 서버가 응답하도록 함 
 });
 // creatServer : 서버 역할을 하는 객체 하나를 생성해줌
 
