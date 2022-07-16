@@ -1,5 +1,5 @@
-## URL, Domain
-### URL의 구조
+# URL, Domain
+## URL의 구조
 https://example.com/business/mart/item?category=14&id=2965
 * http
     - **스킴(scheme)** -> 프로토콜 이름이 들어감(클라이언트와 서버간의 통신 규약, 웹에서는 주로 http or https)
@@ -14,7 +14,7 @@ https://example.com/business/mart/item?category=14&id=2965
     - 여기서는 category 항목의 값을 14, id 항목의 값을 2965로 지정 
     - 각 항목을 구분할 때는 &를 써준다 
 
-### Domain의 계층
+## Domain의 계층
 Domain Name System이라고 하는 체계를 바탕으로 생성되는 문자열 이름 
 1. root domain 
     - 인터넷 전체를 나타내는 단위로 생각 
@@ -28,7 +28,7 @@ Domain Name System이라고 하는 체계를 바탕으로 생성되는 문자열
 5. test.www.naver.com(Fourth-Level 도메인)
 >하지만 실제 서비스에서는 보통 Third-level 정도까지만 사용하는 경우가 많다
 
-### Domain Name Resolution
+## Domain Name Resolution
 <img src="DNR.jpg" width="450px" height="400px">
 
 
