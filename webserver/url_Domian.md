@@ -29,7 +29,7 @@ Domain Name System이라고 하는 체계를 바탕으로 생성되는 문자열
 >하지만 실제 서비스에서는 보통 Third-level 정도까지만 사용하는 경우가 많다
 
 ## Domain Name Resolution
-<img src="DNR.jpg" width="450px" height="400px">
+<img src="/Users/sihagwak/Desktop/coding/nodestudy/webserver/DNR.jpg" width="450px" height="400px">
 
 
 [자세한 내용 참고 사이트](https://aws.amazon.com/ko/route53/what-is-dns/)
