@@ -1,5 +1,22 @@
 {
   "dependencies": {
     "express": "^4.18.1"
-  }
+  },
+  "name": "express-api-server",
+  "description": "node.js 공부내용 정리",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SashaGwak/nodestudy.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SashaGwak/nodestudy/issues"
+  },
+  "homepage": "https://github.com/SashaGwak/nodestudy#readme"
 }
