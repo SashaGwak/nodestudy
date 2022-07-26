@@ -4,6 +4,8 @@ const app = express();
 
 const members = require('./members');
 
+app.use(express.json());
+
 // json 형태로 저장되어 있는 member 정보 모두 출력하기
 app.get('/api/members', (req, res) => {
     const {team} = req.query; 
@@ -26,6 +28,12 @@ app.get('/api/members/:id', (req, res) => {
         res.status(404).send({message : 'There is no such member'});
     }
 });
+
+app.post('/api/members', (req,res) => {
+    const newMember = req.body;
+    members.push(newMember);
+    res.send(newMember);
+})
 
 app.listen(3000, () => {
     console.log('Server is listing...')
