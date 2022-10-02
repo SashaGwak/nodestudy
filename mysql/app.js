@@ -67,4 +67,3 @@ app.delete('/api/members/:id', (req, res) => {
 app.listen(3000, () => {
     console.log('Server is listing...')
 });
-
