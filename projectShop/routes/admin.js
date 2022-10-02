@@ -5,12 +5,12 @@ const adminController = require('../controllers/admin');
 
 const router = express.Router();
 
-// admin/add-product
+// 상품 추가 페이지
 router.get('/add-product', adminController.getAddProduct);
-// admin/product
-router.get('/products', adminController.getAddProduct);
+// 상품 관리 페이지
+router.get('/products', adminController.getProducts);
 
-// admin/add-prouct(POST)
+// 상품 추가 기능
 router.post('/add-product', adminController.postAddProduct);
 
 module.exports = router;
