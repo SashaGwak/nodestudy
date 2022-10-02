@@ -11,6 +11,21 @@ exports.getProducts = (req, res, next) => {
   });
 };
 
+exports.getProduct = (req, res, next) => {
+  const prodId = req.params.productId;
+  // routes에서 /products/:productId 지정해줬기 때문에 params에서 사용가능
+  Product.findById(prodId, product => {
+    console.log(product);
+    // 불러온 제품의 세부 정보
+    res.render('shop/product-detail', {
+      product: product, 
+      pageTitle: product.title, 
+      path: '/products'
+    });
+  })
+}
+
+
 // index 렌더링
 exports.getIndex = (req, res, next) => {
   Product.fetchAll(products => {
