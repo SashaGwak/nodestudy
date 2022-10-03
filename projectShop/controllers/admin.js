@@ -15,20 +15,23 @@ exports.postAddProduct = (req, res, next) => {
   const imageUrl = req.body.imageUrl;
   const price = req.body.price;
   const description = req.body.description;
-  Product.create({
-    title: title, 
-    imageUrl: imageUrl, 
-    price: price, 
-    description: description
-  })
-  .then(result => {
-    // console.log(result);
-    console.log('Created Product');
-    res.redirect('/admin/products');
-  })
-  .catch(err => {
-    console.log(err);
-  });
+  // creat테이블명
+  // hasMany 관계설정을 해주어 사용가능
+  req.user // userId 도 넣어주게됨
+    .createProduct({
+      title: title, 
+      imageUrl: imageUrl, 
+      price: price, 
+      description: description, 
+    })
+    .then(result => {
+      // console.log(result);
+      console.log('Created Product');
+      res.redirect('/admin/products');
+    })
+    .catch(err => {
+      console.log(err);
+    });
 };
 
 // 상품 편집 페이지 
