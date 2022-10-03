@@ -45,6 +45,12 @@ exports.getCart = (req, res, next) => {
     })
 }
 
+exports.postCart = (req, res, next) => {
+  const prodId = req.body.productId; 
+  console.log(prodId);
+  res.redirect('/cart');
+}
+
 // 주문 렌더링
 exports.getOrders = (req, res, next) => {
     res.render('shop/orders' , {

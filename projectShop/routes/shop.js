@@ -17,12 +17,13 @@ router.get('/products', shopController.getProducts);
 // 제품별 상세 페이지
 router.get('/products/:productId', shopController.getProduct);
 
-
 // 장바구니 페이지
-router.get('/cart', shopController.getOrders);
+router.get('/cart', shopController.getCart);
+
+router.post('/cart', shopController.postCart);
 
 // 주문 페이지
-router.get('/orders', shopController.getCart);
+router.get('/orders', shopController.getOrders);
 
 router.get('/checkout', shopController.getCheckout);
 

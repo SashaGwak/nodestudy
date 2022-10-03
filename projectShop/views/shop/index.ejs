@@ -22,7 +22,8 @@
                             <p class="product__description"><%= product.description %></p>
                         </div>
                         <div class="card__actions">
-                            <button class="btn">Add to Cart</button>
+                            <%- include('../includes/add-to-cart.ejs', {product: product}) %>
+                            <!-- product는 해당 루프에서만 사용가능한 로컬 변수로 루프에 포함된 include에서는 기본적으로 변수를 받지 못해서 따로 보내줘야하는 것 ! -->
                         </div>
                     </article>
                 <% } %>
