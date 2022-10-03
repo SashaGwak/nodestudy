@@ -14,8 +14,11 @@ router.get('/products', adminController.getProducts);
 // 상품 추가 기능
 router.post('/add-product', adminController.postAddProduct);
 
-// 상품 정보 변경 기능 
+// 상품 정보 변경 페이지
 router.get('/edit-product/:productId', adminController.getEditProduct);
+
+// 상품 정보 변경 기능
+router.post('/edit-product', adminController.postEditProduct);
 
 module.exports = router;
 
