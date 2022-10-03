@@ -9,15 +9,26 @@ exports.getAddProduct = (req, res, next) => {
   });
 };
 
-// 검색 기능
+// 상품 추가 기능
 exports.postAddProduct = (req, res, next) => {
   const title = req.body.title;
   const imageUrl = req.body.imageUrl;
   const price = req.body.price;
   const description = req.body.description;
-  const product = new Product(null, title, imageUrl, description, price);
-  product.save();
-  res.redirect('/');
+  Product.create({
+    title: title, 
+    imageUrl: imageUrl, 
+    price: price, 
+    description: description
+  })
+  .then(result => {
+    // console.log(result);
+    console.log('Created Product');
+    res.redirect('/admin/products');
+  })
+  .catch(err => {
+    console.log(err);
+  });
 };
 
 // 상품 편집 페이지 
@@ -27,51 +38,58 @@ exports.getEditProduct = (req, res, next) => {
     return res.redirect('/');
   }
   const prodId = req.params.productId; 
-  Product.findById(prodId, product => {
-    if (!product) {
-      return res.redirect('/');
-    }
-    res.render('admin/edit-product', {
-      pageTitle: 'Edit Product',
-      path: '/admin/edit-product',
-      editing: editMode, 
-      product: product
-    });
-  })
+  Product.findByPk(prodId)
+    .then(product => {
+      if (!product) {
+        return res.redirect('/');
+      }
+      res.render('admin/edit-product', {
+        pageTitle: 'Edit Product',
+        path: '/admin/edit-product',
+        editing: editMode, 
+        product: product
+      });
+    })
+    .catch(err => console.log(err));
 };
 
 // 상품 편집 기능
 exports.postEditProduct = (req, res, next) => {
-  const prodId = req.body.productId;
-  const updatedTitle = req.body.title;
-  const updatedPrice = req.body.price;
-  const updatedImageUrl = req.body.imageUrl;
-  const updatedDesc = req.body.description;
-  const updatedProduct = new Product(
-    prodId, 
-    updatedTitle, 
-    updatedImageUrl, 
-    updatedDesc, 
-    updatedPrice
-  ); 
-  updatedProduct.save();
-  res.redirect('/admin/products');
+  const newObj = { 
+    title : req.body.title, 
+    price : req.body.price, 
+    imageUrl :req.body.imageUrl, 
+    description : req.body.description
+  }
+  Product.update(newObj, {where: {id: req.body.productId}})
+  .then((result) => {
+    console.log('UPDATED PRODUCT!');
+    res.redirect('/admin/products');
+  })
+  .catch(err => console.log(err));
 }
 
 // 상품 삭제기능
 exports.postDeleteProduct = (req, res, next) => {
-  const prodId = req.body.productId;
-  Product.deleteById(prodId);
-  res.redirect('/admin/products');
+  Product.destroy({
+    where: {id: req.body.productId}})
+    .then((result) => {
+      console.log("DELETE PRODUCT");
+      res.redirect('/admin/products');
+    })
+    .catch(err => console.log(err));
+
 };
 
 // 상품 관리 페이지
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll(products => {
+  Product.findAll()
+  .then(products => {
     res.render('admin/products', {
       prods: products,
       pageTitle: 'Admin Products',
       path: '/admin/products',
-  } )
-  });
+    });
+  })
+  .catch(err => {console.log(err)});
 };

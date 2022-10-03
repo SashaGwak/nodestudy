@@ -3,38 +3,46 @@ const Cart = require('../models/cart');
 
 // 검색 후 상품 보여주기
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll(products => {
+  Product.findAll()
+  .then(products => {
     res.render('shop/product-list', {
       prods: products,
       pageTitle: 'All Products',
       path: '/products',
     });
-  });
+  })
+  .catch(err => {
+    console.log(err);
+  })
 };
 
+// 제품 상세 페이지 
 exports.getProduct = (req, res, next) => {
   const prodId = req.params.productId;
-  // routes에서 /products/:productId 지정해줬기 때문에 params에서 사용가능
-  Product.findById(prodId, product => {
-    console.log(product);
-    // 불러온 제품의 세부 정보
-    res.render('shop/product-detail', {
-      product: product, 
-      pageTitle: product.title, 
-      path: '/products'
-    });
-  })
-}
+  Product.findByPk(prodId)
+    .then(product => {
+      res.render('shop/product-detail', {
+        product: product,
+        pageTitle: product.title,
+        path: '/products'
+      });
+    })
+    .catch(err => console.log(err));
+};
 
 // index 렌더링
 exports.getIndex = (req, res, next) => {
-  Product.fetchAll(products => {
+  Product.findAll()
+  .then(products => {
     res.render('shop/index', {
       prods: products,
       pageTitle: 'Shop',
       path: '/',
     });
-  });
+  })
+  .catch(err => {
+    console.log(err);
+  })
 };
 
 // 장바구니 렌더링
