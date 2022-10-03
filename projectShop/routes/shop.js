@@ -20,7 +20,11 @@ router.get('/products/:productId', shopController.getProduct);
 // 장바구니 페이지
 router.get('/cart', shopController.getCart);
 
+// 장바구니 추가 기능
 router.post('/cart', shopController.postCart);
+
+// 장바구니 삭제 기능
+router.post('/cart-delete-item', shopController.postCartDelete);
 
 // 주문 페이지
 router.get('/orders', shopController.getOrders);

@@ -57,12 +57,22 @@ exports.getCart = (req, res, next) => {
   });
 }
 
+// 장바구니 추가 기능
 exports.postCart = (req, res, next) => {
   const prodId = req.body.productId; 
   Product.findById(prodId, product => {
     Cart.addProduct(prodId, product.price);
   })
   res.redirect('/cart');
+}
+
+// 장바구니 삭제 기능
+exports.postCartDelete = (req, res, next) => {
+  const prodId = req.body.productId; 
+  Product.findById(prodId, product => {
+    Cart.deleteProduct(prodId, product.price);
+    res.redirect('/cart');
+  });
 }
 
 // 주문 렌더링
