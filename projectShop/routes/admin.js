@@ -20,6 +20,9 @@ router.get('/edit-product/:productId', adminController.getEditProduct);
 // 상품 정보 변경 기능
 router.post('/edit-product', adminController.postEditProduct);
 
+// 상품 삭제 기능
+router.post('/delete-product', adminController.postDeleteProduct);
+
 module.exports = router;
 
 /*
