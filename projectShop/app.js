@@ -5,6 +5,9 @@ const express = require('express');
 const app = express();
 const port = 8000;
 
+/* Sequelize */
+const Sequelize = require('./util/database');
+
 /* 정적경로 지정 */
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -24,10 +27,20 @@ app.use(shopRoutes);
 const errorController = require('./controllers/error');
 app.use(errorController.get404);
 
+/* DB */
+Sequelize
+    .sync()
+    // sync -> 모델을 데이터베이스로 동기화해 해당하는 테이블을 생성하고 관계가 있다면 관계도 생성
+    .then(result => {
+        // console.log(result);  // Sequelize 객체 출력
+        app.listen(port, () => {
+            console.log('Server start : ', port);
+        });
+    })
+    .catch(err => {
+        console.log(err);
+    });
 
-app.listen(port, () => {
-    console.log('Server start : ', port);
-});
 
 /* 404 에러처리 
 app.use((req, res, next) => {

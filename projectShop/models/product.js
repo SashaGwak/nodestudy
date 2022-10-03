@@ -1,78 +1,28 @@
-const { channel } = require('diagnostics_channel');
-const fs = require('fs');
-const path = require('path');
+const Sequelize = require('sequelize');
 
-const Cart = require('./cart');
+// 커넥션 풀 가져오기
+const sequelize = require('../util/database');
 
-const p = path.join(
-    path.dirname(process.mainModule.filename),
-    'data',
-    'products.json'
-);
-
-const getProductsFromFile = cb => {
-    fs.readFile(p, (err, fileContent) => {
-        if (err) {
-            cb([]);
-        } else {
-            cb(JSON.parse(fileContent));
-        }
-    });
-};
-
-module.exports = class Product {
-    constructor(id, title, imageUrl, description, price) {
-        this.id = id;
-        this.title = title;
-        this.imageUrl = imageUrl;
-        this.description = description;
-        this.price = price;
-
+const Product = sequelize.define('product', {
+    id: {
+        type: Sequelize.INTEGER, 
+        autoIncrement: true, 
+        allowNull: false, 
+        primaryKey: true
+    }, 
+    title: Sequelize.STRING, 
+    price: {
+        type: Sequelize.STRING, 
+        allowNull: false
+    }, 
+    imageUrl: {
+        type: Sequelize.STRING, 
+        allowNull: false
+    }, 
+    description: {
+        type: Sequelize.STRING, 
+        allowNull: false
     }
+}); 
 
-    save() {
-        getProductsFromFile(products => {
-            if (this.id) {
-                const existingProductIndex = products.findIndex(prod => prod.id == this.id);
-                const updeatedProduct = [...products]; 
-                updeatedProduct[existingProductIndex] = this;
-                fs.writeFile(p, JSON.stringify(updeatedProduct), err => {
-                    console.log(err);
-                })
-            } else {
-                this.id = Math.random().toString();
-                products.push(this);
-                fs.writeFile(p, JSON.stringify(products), err => {
-                    console.log(err);
-                });
-            }
-        })
-    }
-
-    static deleteById(id) {
-        getProductsFromFile(products => {
-            const product = products.find(prod => prod.id === id);
-            const updatedProducts = products.filter(prod => prod.id !== id);
-            fs.writeFile(p, JSON.stringify(updatedProducts), err => {
-                if (!err) {
-                    Cart.deleteProduct(id, product.price);
-                }
-            }); 
-        });
-    }
-
-    static fetchAll(cb) {
-        getProductsFromFile(cb);
-    }
-
-    static findById(id, cb) {
-        getProductsFromFile(products => {
-            const product = products.find(p => p.id === id);
-            /* 같은 의미
-            const product = products.find(p => {
-                return p.id === id}); 
-            */
-            cb(product);
-        })
-    }
-}
+module.exports = Product;
