@@ -65,12 +65,41 @@ exports.getCart = (req, res, next) => {
 
 // 장바구니 추가 기능
 exports.postCart = (req, res, next) => {
-  const prodId = req.body.productId; 
-  Product.findById(prodId, product => {
-    Cart.addProduct(prodId, product.price);
-  })
-  res.redirect('/cart');
-}
+  const prodId = req.body.productId;
+  let fetchedCart;
+  let newQuantity = 1;
+  req.user
+    .getCart()
+    .then(cart => {
+      fetchedCart = cart;
+      return cart.getProducts({ where: { id: prodId } });
+    })
+    .then(products => {
+      let product;
+      if (products.length > 0) {
+        product = products[0];
+      }
+      // 이미 있는 상품인 경우
+      if (product) {
+        const oldQuantity = product.cartItem.quantity;
+        newQuantity = oldQuantity + 1;
+        return product;
+      }
+      // 새제품인 경우
+      return Product.findById(prodId);
+    })
+    .then(product => {
+      return fetchedCart.addProduct(product, {
+        through: { quantity: newQuantity }
+        // quantity가 newQuantity로 설정됨
+      });
+    })
+    .then(() => {
+      res.redirect('/cart');
+    })
+    .catch(err => console.log(err));
+};
+
 
 // 장바구니 삭제 기능
 exports.postCartDelete = (req, res, next) => {
