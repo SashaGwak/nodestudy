@@ -9,6 +9,8 @@ const port = 8000;
 const Sequelize = require('./util/database');
 const Product = require('./models/product');
 const User = require('./models/user');
+const Cart = require('./models/cart');
+const CartItem = require('./models/cart-item');
 
 /* 정적경로 지정 */
 app.use(bodyParser.urlencoded({extended: false}));
@@ -41,6 +43,10 @@ app.use(errorController.get404);
 /* Sequelize 관계설정(동기화 전 진행) */
 Product.belongsTo(User, {contraints: true, onDelete: 'CASCADE'}); 
 User.hasMany(Product); // 선택사항
+User.hasOne(Cart);  // 유저는 하나의 장바구니만 가짐
+Cart.belongsTo(User); // 선택사항
+Cart.belongsToMany(Product, { through: CartItem }); // 다대다 관계 
+Product.belongsToMany(Cart, { through: CartItem }); // 선택사항
 
 /* DB */
 Sequelize
@@ -60,6 +66,9 @@ Sequelize
     })
     .then(user => {
         // console.log(user);
+        return user.createCart();
+    })
+    .then(cart => {
         app.listen(8000);
     })
     .catch(err => {
