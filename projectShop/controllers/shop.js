@@ -1,5 +1,4 @@
 const Product = require('../models/product');
-const Cart = require('../models/cart');
 
 // 검색 후 상품 보여주기
 exports.getProducts = (req, res, next) => {
@@ -115,6 +114,31 @@ exports.postCartDelete = (req, res, next) => {
     })
     .then(result => {
       res.redirect('/cart');
+    })
+    .catch(err => console.log(err));
+}
+
+// 주문 기능 
+exports.postOrder = (req, res, next) => {
+  req.user
+    .getCart()
+    .then(cart => {
+      return cart.getProducts();
+    })
+    .then(products => {
+      return req.user
+        .createOrder()
+        .then(order => {
+          order.addProducts(
+            products.map(product => {
+              product.orderItem = { quantity: product.cartItem.quantity };
+              return product;
+            }));
+        })
+        .catch(err => console.log(err)); 
+    })
+    .then(result => {
+      res.redirect('/orders');
     })
     .catch(err => console.log(err));
 }

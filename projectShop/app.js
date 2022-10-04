@@ -11,6 +11,8 @@ const Product = require('./models/product');
 const User = require('./models/user');
 const Cart = require('./models/cart');
 const CartItem = require('./models/cart-item');
+const Order = require('./models/order');
+const OrderItem = require('./models/order-item');
 
 /* 정적경로 지정 */
 app.use(bodyParser.urlencoded({extended: false}));
@@ -48,6 +50,10 @@ Cart.belongsTo(User); // 선택사항
 Cart.belongsToMany(Product, { through: CartItem }); // 다대다 관계 
 Product.belongsToMany(Cart, { through: CartItem }); // 선택사항
 // through는 어떤 모델을 중간모델, 중간 테이블로 쓸지 sequelize에 알려주는 것
+// M:N 관계를 정의할 때는 through 반드시 지정해줘야 한다 
+Order.belongsTo(User); 
+User.hasMany(Order);
+Order.belongsToMany(Product, {through: OrderItem}); 
 
 /* DB */
 Sequelize
