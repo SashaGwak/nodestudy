@@ -1,27 +1,27 @@
-const Sequelize = require('sequelize');
+const mongoose = require('mongoose'); 
 
-const sequelize = require('../util/database');
+const Schema = mongoose.Schema; 
 
-const Product = sequelize.define('product', {
-  id: {
-    type: Sequelize.INTEGER,
-    autoIncrement: true,
-    allowNull: false,
-    primaryKey: true
-  },
-  title: Sequelize.STRING,
+// 스키마 생성자를 사용해 새로운 스키마를 생성
+const productSchema = new Schema({
+  title: {
+    type: String,
+    required: true
+    // 모든 객체가 title을 가지도록함
+  }, 
   price: {
-    type: Sequelize.DOUBLE,
-    allowNull: false
-  },
-  imageUrl: {
-    type: Sequelize.STRING,
-    allowNull: false
-  },
+    type: Number, 
+    required: true
+  }, 
   description: {
-    type: Sequelize.STRING,
-    allowNull: false
+    type: String, 
+    required: true
+  }, 
+  imageUrl : {
+    type: String, 
+    required: true
   }
-});
+})
 
-module.exports = Product;
+module.exports = mongoose.model('Product', productSchema);
+// model('모델명', 정의한 스키마)는 mongoose가 스키마에 연결하는 것을 도움 
