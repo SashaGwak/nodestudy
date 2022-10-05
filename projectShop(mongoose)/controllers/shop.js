@@ -20,7 +20,9 @@ exports.getProducts = (req, res, next) => {
 // 제품 상세 페이지 
 exports.getProduct = (req, res, next) => {
   const prodId = req.params.productId;
-  Product.findByPk(prodId)
+  Product.findById(prodId)
+  // findById도 몽구스 메서드
+  // findById에 문자열을 전달하면 몽구스가 알아서 ObjectId로 변환
     .then(product => {
       res.render('shop/product-detail', {
         product: product,

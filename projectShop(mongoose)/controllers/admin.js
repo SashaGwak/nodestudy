@@ -80,6 +80,7 @@ exports.postEditProduct = (req, res, next) => {
 // 상품 관리 페이지
 exports.getProducts = (req, res, next) => {
   Product.find()
+    // mongoose에서 find는 여기서 product를 줌(모든 제품을 자동으로 받음)
     .then(products => {
       console.log(products);
       res.render('admin/products', {
