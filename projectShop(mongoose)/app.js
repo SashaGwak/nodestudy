@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const app = express();
 /* DB */
 const mongoose = require('mongoose');
+const User = require('./models/user');
 
 /* 정적경로 지정 */
 app.use(bodyParser.urlencoded({extended: false}));
@@ -13,14 +14,16 @@ app.set('view engine', 'ejs');
 app.set('views', 'views'); 
 // view engine 저장 폴더 알려주는데 사실 views는 기본값이라 안알려줘도 되긴함
 
-// app.use((req, res, next) => {
-//     // User.findByPk(1)
-//     // .then(user => {
-//     //     req.user = user;
-//     //     next();
-//     // })
-//     // .catch(err => console.log(err));
-// });
+// user 정보저장 미들 웨어 생성
+app.use((req, res, next) => {
+  User.findById('633d465b3750053dadaa9328')
+  .then(user => {
+      console.log(user);
+      req.user = user;
+      next();
+  })
+  .catch(err => console.log(err));
+})
 
 /* Routes 가져오기 */
 const adminRoutes = require('./routes/admin');
@@ -36,9 +39,21 @@ app.use(errorController.get404);
 
 mongoose.connect('mongodb+srv://poemha:Mini1028!@clustertest.bwpwhd8.mongodb.net/?retryWrites=true&w=majority') 
 .then(result => {
+  User.findOne().then(user => {
+    if (!user) {
+      const user = new User({
+        name: 'Max', 
+        email: 'max@test.com', 
+        cart: {
+            items: []
+        }
+      });
+      user.save();
+    }
     app.listen(8000, () => {
         console.log('Server start');
     });
     console.log('Connected!');
+  })
 })
 .catch(err => console.log(err));
