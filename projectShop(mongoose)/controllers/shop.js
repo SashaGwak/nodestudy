@@ -2,8 +2,10 @@ const Product = require('../models/product');
 
 // 검색 후 상품 보여주기
 exports.getProducts = (req, res, next) => {
-  Product.findAll()
+  Product.find()
+  // mongoose에서 find는 여기서 product를 줌(모든 제품을 자동으로 받음)
   .then(products => {
+    console.log(products);
     res.render('shop/product-list', {
       prods: products,
       pageTitle: 'All Products',
@@ -31,7 +33,7 @@ exports.getProduct = (req, res, next) => {
 
 // index 렌더링
 exports.getIndex = (req, res, next) => {
-  Product.findAll()
+  Product.find()
   .then(products => {
     res.render('shop/index', {
       prods: products,

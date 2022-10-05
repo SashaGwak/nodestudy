@@ -79,8 +79,9 @@ exports.postEditProduct = (req, res, next) => {
 
 // 상품 관리 페이지
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll()
+  Product.find()
     .then(products => {
+      console.log(products);
       res.render('admin/products', {
         prods: products,
         pageTitle: 'Admin Products',
