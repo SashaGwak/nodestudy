@@ -68,39 +68,16 @@ exports.getCart = (req, res, next) => {
 
 // 장바구니 추가 기능
 exports.postCart = (req, res, next) => {
-  const prodId = req.body.productId;
-  let fetchedCart;
-  let newQuantity = 1;
-  req.user
-    .getCart()
-    .then(cart => {
-      fetchedCart = cart;
-      return cart.getProducts({ where: { id: prodId } });
-    })
-    .then(products => {
-      let product;
-      if (products.length > 0) {
-        product = products[0];
-      }
-      // 이미 있는 상품인 경우
-      if (product) {
-        const oldQuantity = product.cartItem.quantity;
-        newQuantity = oldQuantity + 1;
-        return product;
-      }
-      // 새제품인 경우
-      return Product.findByPk(prodId);
-    })
+  const prodId = req.body.productId; 
+  Product.findById(prodId)
     .then(product => {
-      return fetchedCart.addProduct(product, {
-        through: { quantity: newQuantity }
-        // quantity가 newQuantity로 설정됨
-      });
+      // user에서 정의한 장바구니 메서드
+      return req.user.addToCart(product);
     })
-    .then(() => {
-      res.redirect('/cart');
+    .then(result => {
+      console.log(result); 
+      res.redirect('/cart'); 
     })
-    .catch(err => console.log(err));
 };
 
 
