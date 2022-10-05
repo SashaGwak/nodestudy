@@ -18,9 +18,9 @@ app.set('views', 'views');
 app.use((req, res, next) => {
   User.findById('633d465b3750053dadaa9328')
   .then(user => {
-      console.log(user);
-      req.user = user;
-      next();
+    console.log(user);
+    req.user = user;
+    next();
   })
   .catch(err => console.log(err));
 })
@@ -45,7 +45,7 @@ mongoose.connect('mongodb+srv://poemha:Mini1028!@clustertest.bwpwhd8.mongodb.net
         name: 'Max', 
         email: 'max@test.com', 
         cart: {
-            items: []
+          items: []
         }
       });
       user.save();

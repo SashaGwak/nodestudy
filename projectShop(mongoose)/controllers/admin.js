@@ -90,7 +90,7 @@ exports.getProducts = (req, res, next) => {
     // find 다음에 추가할 수 있는 populate 메소드 
     // populate는 몽구스에게 특정필드의 관련정보를 모두 가져오도록 알리는 기능 -> 여기서는 원래 userId objectId만 가져왔었는데 user의 이름, 이메일등 유저 정보까지 모두 가져오게됨 약간 조인이랑 비슷한듯
     .then(products => {
-      console.log(products);
+      // console.log(products);
       res.render('admin/products', {
         prods: products,
         pageTitle: 'Admin Products',

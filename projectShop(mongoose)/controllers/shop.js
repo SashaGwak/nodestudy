@@ -5,7 +5,7 @@ exports.getProducts = (req, res, next) => {
   Product.find()
   // mongoose에서 find는 여기서 product를 줌(모든 제품을 자동으로 받음)
   .then(products => {
-    console.log(products);
+    // console.log(products);
     res.render('shop/product-list', {
       prods: products,
       pageTitle: 'All Products',
@@ -36,35 +36,33 @@ exports.getProduct = (req, res, next) => {
 // index 렌더링
 exports.getIndex = (req, res, next) => {
   Product.find()
-  .then(products => {
-    res.render('shop/index', {
-      prods: products,
-      pageTitle: 'Shop',
-      path: '/',
+    .then(products => {
+      res.render('shop/index', {
+        prods: products,
+        pageTitle: 'Shop',
+        path: '/'
+      });
+    })
+    .catch(err => {
+      console.log(err);
     });
-  })
-  .catch(err => {
-    console.log(err);
-  })
 };
 
 // 장바구니 렌더링
 exports.getCart = (req, res, next) => {
   req.user
-    .getCart()
-    .then(cart => {
-      return cart.getProducts()
-      .then(products => {
-        res.render('shop/cart' , {
-          path: '/cart', 
-          pageTitle: 'Your Cart', 
-          products: products
-        });
-      })
-      .catch(err => console.log(err));
+    .populate('cart.items.productId')
+    .then(user => {
+      console.log(user.cart.items);
+      const products = user.cart.items;
+      res.render('shop/cart', {
+        path: '/cart',
+        pageTitle: 'Your Cart',
+        products: products
+      });
     })
     .catch(err => console.log(err));
-}
+};
 
 // 장바구니 추가 기능
 exports.postCart = (req, res, next) => {
@@ -80,19 +78,11 @@ exports.postCart = (req, res, next) => {
     })
 };
 
-
 // 장바구니 삭제 기능
 exports.postCartDelete = (req, res, next) => {
   const prodId = req.body.productId; 
   req.user 
-    .getCart()
-    .then(cart => {
-      return cart.getProducts({ where: { id: prodId}}); 
-    })
-    .then(products => {
-      const product = products[0]; 
-      return product.cartItem.destroy(); 
-    })
+    .removeFromCart(prodId)
     .then(result => {
       res.redirect('/cart');
     })
@@ -135,7 +125,7 @@ exports.getOrders = (req, res, next) => {
   req.user
   .getOrders({include: ['products']})
     .then(orders => {
-      console.log(orders);
+      // console.log(orders);
       res.render('shop/orders' , {
           path: '/orders', 
           pageTitle: 'Your Orders',
