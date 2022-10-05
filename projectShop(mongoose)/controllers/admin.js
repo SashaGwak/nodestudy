@@ -80,6 +80,15 @@ exports.postEditProduct = (req, res, next) => {
 exports.getProducts = (req, res, next) => {
   Product.find()
     // mongoose에서 find는 여기서 product를 줌(모든 제품을 자동으로 받음)
+
+    // .select('title price -_id')
+    // 가져온 정보에서 title, price 속성만 가져오고 _id는 안가져오겠다는 의미! 
+    // id 는 명시적으로 제거하지 않으면 항상 가져옴! 
+    
+    // .populate('userId', 'name')
+    // populate('세부내용 원하는필드', '가져오고싶은 속성')
+    // find 다음에 추가할 수 있는 populate 메소드 
+    // populate는 몽구스에게 특정필드의 관련정보를 모두 가져오도록 알리는 기능 -> 여기서는 원래 userId objectId만 가져왔었는데 user의 이름, 이메일등 유저 정보까지 모두 가져오게됨 약간 조인이랑 비슷한듯
     .then(products => {
       console.log(products);
       res.render('admin/products', {
