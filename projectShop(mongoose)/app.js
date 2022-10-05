@@ -16,7 +16,7 @@ app.set('views', 'views');
 
 // user 정보저장 미들 웨어 생성
 app.use((req, res, next) => {
-  User.findById('633d465b3750053dadaa9328')
+  User.findById('633dabf05d188594892a37cd')
   .then(user => {
     console.log(user);
     req.user = user;

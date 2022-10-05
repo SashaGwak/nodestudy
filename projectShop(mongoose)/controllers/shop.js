@@ -1,4 +1,5 @@
 const Product = require('../models/product');
+const Order = require('../models/order');
 
 // 검색 후 상품 보여주기
 exports.getProducts = (req, res, next) => {
@@ -91,30 +92,26 @@ exports.postCartDelete = (req, res, next) => {
 
 // 주문 기능 
 exports.postOrder = (req, res, next) => {
-  let fetchedCart;
-  req.user
-    .getCart()
-    .then(cart => {
-      fetchedCart = cart;
-      return cart.getProducts();
-    })
-    .then(products => {
-      return req.user
-        .createOrder()
-        .then(order => {
-          order.addProducts(
-            products.map(product => {
-              product.orderItem = { quantity: product.cartItem.quantity };
-              return product;
-            }));
-        })
-        .catch(err => console.log(err)); 
+  req.user 
+    .populate('cart.items.productId')
+    .then(user => {
+      const products = user.cart.items.map(i => {
+        return { quantity: i.quantity, product: {...i.productId._doc }}; 
+        // _doc을 사용하면 그 안에 있는 객체에만 접근할 수 있음
+      });
+      const order = new Order({
+        user: {
+          name: req.user.name,
+          userId: req.user
+        },
+        products : products
+      });
+      return order.save();
     })
     .then(result => {
-      // 장바구니 비우기
-      return fetchedCart.setProducts(null); 
+      return req.user.clearCart();
     })
-    .then(result => {
+    .then(() => {
       res.redirect('/orders');
     })
     .catch(err => console.log(err));
@@ -122,18 +119,16 @@ exports.postOrder = (req, res, next) => {
 
 // 주문 렌더링
 exports.getOrders = (req, res, next) => {
-  req.user
-  .getOrders({include: ['products']})
-    .then(orders => {
-      // console.log(orders);
-      res.render('shop/orders' , {
-          path: '/orders', 
-          pageTitle: 'Your Orders',
-          orders: orders
-      })
+  Order.find({'user.userId': req.user._id})
+  .then(orders => {
+    res.render('shop/orders' , {
+        path: '/orders', 
+        pageTitle: 'Your Orders',
+        orders: orders
     })
-    .catch(err => console.log(err));
-}
+  })
+  .catch(err => console.log(err));
+};
 
 exports.getCheckout = (req, res, next) => {
     res.render('shop/checkout' , {
