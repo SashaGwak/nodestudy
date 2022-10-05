@@ -14,7 +14,7 @@
                             <h1 class="product__title"><%= product.title %></h1>
                         </header>
                         <div class="card__image">
-                            <img src="<%= product.imageUrl%>"
+                            <img src="<%= product.imageUrl %>"
                                 alt="<%= product.title %>">
                         </div>
                         <div class="card__content">
@@ -22,6 +22,7 @@
                             <p class="product__description"><%= product.description %></p>
                         </div>
                         <div class="card__actions">
+                                <a href="/products/<%= product._id %>" class="btn">Details</a>
                             <%- include('../includes/add-to-cart.ejs', {product: product}) %>
                             <!-- product는 해당 루프에서만 사용가능한 로컬 변수로 루프에 포함된 include에서는 기본적으로 변수를 받지 못해서 따로 보내줘야하는 것 ! -->
                         </div>

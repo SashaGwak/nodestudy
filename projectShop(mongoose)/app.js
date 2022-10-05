@@ -1,10 +1,8 @@
 const path = require('path');
-const bodyParser = require('body-parser');
 
 const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
-const port = 8000;
-
 /* DB */
 const mongoose = require('mongoose');
 
@@ -25,12 +23,12 @@ app.use((req, res, next) => {
 });
 
 /* Routes 가져오기 */
-// const adminRoutes = require('./routes/admin');
-// const shopRoutes = require('./routes/shop');
+const adminRoutes = require('./routes/admin');
+const shopRoutes = require('./routes/shop');
 
 /* 경로 지정 */ 
-// app.use('/admin', adminRoutes);
-// app.use(shopRoutes);
+app.use('/admin', adminRoutes);
+app.use(shopRoutes);
 
 /* 404 에러처리 */
 const errorController = require('./controllers/error');
