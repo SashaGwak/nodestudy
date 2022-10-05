@@ -94,7 +94,8 @@ exports.getProducts = (req, res, next) => {
 // 상품 삭제기능
 exports.postDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
-  Product.deleteById(prodId)
+  Product.findByIdAndRemove(prodId)
+  // findByIdAndRemove 몽구스 내장메서드로 문서를 제거하는 역할
     .then(() => {
       console.log('DESTROYED PRODUCT');
       res.redirect('/admin/products');
