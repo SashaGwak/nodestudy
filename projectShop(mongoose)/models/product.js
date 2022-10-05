@@ -25,3 +25,4 @@ const productSchema = new Schema({
 
 module.exports = mongoose.model('Product', productSchema);
 // model('모델명', 정의한 스키마)는 mongoose가 스키마에 연결하는 것을 도움 
+// 컬렉션 이름은 products로 소문자, 복수형으로 자동 생성됨
