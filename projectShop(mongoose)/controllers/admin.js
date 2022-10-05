@@ -16,7 +16,7 @@ exports.postAddProduct = (req, res, next) => {
   const price = req.body.price;
   const description = req.body.description;
   // 모델에 기반해 새제품을 생성
-  const product = new Product({title, price, description, imageUrl});
+  const product = new Product({title, price, description, imageUrl, userId: req.user });
   product
     // mongoose가 제공하는 save 메서드
     .save()
