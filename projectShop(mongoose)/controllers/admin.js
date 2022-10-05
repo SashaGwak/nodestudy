@@ -37,8 +37,7 @@ exports.getEditProduct = (req, res, next) => {
     return res.redirect('/');
   }
   const prodId = req.params.productId;
-  Product.findByPk(prodId)
-    // Product.findById(prodId)
+  Product.findById(prodId)
     .then(product => {
       if (!product) {
         return res.redirect('/');
@@ -60,16 +59,16 @@ exports.postEditProduct = (req, res, next) => {
   const updatedPrice = req.body.price;
   const updatedImageUrl = req.body.imageUrl;
   const updatedDesc = req.body.description;
-
-  const product = new Product(
-    updatedTitle,
-    updatedPrice,
-    updatedDesc,
-    updatedImageUrl,
-    prodId
-  );
-  product
-    .save()
+  Product.findById(prodId)
+  // findById를 통해 디비에서 제품정보를 가져온 뒤(몽구스에서 몽구스객체로 가져오는 것 -> save쓰려고)
+    .then(product => {
+      product.title = updatedTitle;
+      product.price = updatedPrice;
+      product.imageUrl = updatedImageUrl;
+      product.description = updatedDesc;
+      return product.save();
+      // 기존에 있는 객체에 save 호출하여 업데이트 해준 것 
+    })
     .then(result => {
       console.log('UPDATED PRODUCT!');
       res.redirect('/admin/products');
