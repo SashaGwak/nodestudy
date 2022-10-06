@@ -18,7 +18,7 @@ app.set('views', 'views');
 app.use((req, res, next) => {
   User.findById('633dabf05d188594892a37cd')
   .then(user => {
-    console.log(user);
+    // console.log(user);
     req.user = user;
     next();
   })
@@ -39,23 +39,24 @@ app.use(authRoutes);
 const errorController = require('./controllers/error');
 app.use(errorController.get404);
 
-mongoose.connect('mongodb+srv://poemha:Mini1028!@clustertest.bwpwhd8.mongodb.net/?retryWrites=true&w=majority') 
-.then(result => {
-  User.findOne().then(user => {
-    if (!user) {
-      const user = new User({
-        name: 'Max', 
-        email: 'max@test.com', 
-        cart: {
-          items: []
-        }
-      });
-      user.save();
-    }
+mongoose
+  .connect('mongodb+srv://poemha:Mini1028!@clustertest.bwpwhd8.mongodb.net/?retryWrites=true&w=majority') 
+  .then(result => {
+    User.findOne().then(user => {
+      if (!user) {
+        const user = new User({
+          name: 'Max', 
+          email: 'max@test.com', 
+          cart: {
+            items: []
+          }
+        });
+        user.save();
+      }
+      console.log('Connected!');
+    })
     app.listen(8000, () => {
         console.log('Server start');
     });
-    console.log('Connected!');
   })
-})
-.catch(err => console.log(err));
+  .catch(err => console.log(err));
