@@ -3,9 +3,30 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
+
 /* DB */
 const mongoose = require('mongoose');
 const User = require('./models/user');
+const MONGODB_URI = 'mongodb+srv://poemha:Mini1028!@clustertest.bwpwhd8.mongodb.net/';
+
+/* session */
+const session = require('express-session');
+const MongoDBStore = require('connect-mongodb-session')(session);
+const store = new MongoDBStore({
+  uri : MONGODB_URI, 
+  collection : 'sessions', 
+});
+// require('connect-mongodb-session')(session)을 실행하여 생성자 함수를 산출하며 그 결과를 MongoDBStore에 저장하는 것
+app.use(
+  session({
+    secret: 'my secret',
+    resave: false, 
+    saveUninitialized: false, 
+    store: store
+  }));
+// resave: false -> 전송되는 모든 응답마다 저장되는 것이 아니라 세션이 변경되었을 때만 저장
+// saveUninitialized: false => 저장할 필요가 없는 요청의 경우 아무 세션도 저장되지 않도록 함
+
 
 /* 정적경로 지정 */
 app.use(bodyParser.urlencoded({extended: false}));
