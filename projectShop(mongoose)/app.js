@@ -28,10 +28,12 @@ app.use((req, res, next) => {
 /* Routes 가져오기 */
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
+const authRoutes = require('./routes/auth');
 
 /* 경로 지정 */ 
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
+app.use(authRoutes);
 
 /* 404 에러처리 */
 const errorController = require('./controllers/error');
