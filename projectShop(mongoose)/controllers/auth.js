@@ -1,3 +1,6 @@
+const { doesNotMatch } = require('assert');
+const bcrypt = require('bcryptjs');
+
 const User = require('../models/user');
 
 exports.getLogin = (req, res, next) => {
@@ -19,15 +22,32 @@ exports.getSignup = (req, res, next) => {
 };
 
 exports.postLogin = (req, res, next) => {
-  User.findById('633dabf05d188594892a37cd')
-  .then(user => {
-    req.session.isLoggedIn = true;
-    req.session.user = user;
-    req.session.save((err) => {
-      console.log(err);
-      res.redirect('/');
+  const email = req.body.email; 
+  const password = req.body.password;
+  User.findOne({email: email})
+    .then(user => {
+      if (!user) {
+        return res.redirect('/login');
+      }
+      bcrypt
+      .compare(password, user.password)
+      .then(doMatch => {
+        if (doMatch) {
+          req.session.isLoggedIn = true; 
+          req.session.user = user;
+          return req.session.save(err => {
+            console.log(err);
+            res.redirect('/');
+          });
+        }
+        res.redirect('/login');
+      })
+      .catch(err => {
+        console.log(err); 
+        res.redirect('/login');
+      })
+      // compare(비교할 비번, 정보에서 비교할 얘)
     })
-  })
   .catch(err => console.log(err));
   // res.setHeader('Set-Cookie', 'loggedIn=true; HttpOnly');
   // 헤더의 이름을 Set-Cookie로 지정
@@ -48,15 +68,20 @@ exports.postSignup = (req, res, next) => {
         return res.redirect('/signup');
       }
       // 아니라면 
-      const user = new User({
-        email: email, 
-        password: password, 
-        cart: { items: [] } 
+      return bcrypt
+      .hash(password, 12)
+    // 12 정도면 높은 보안 성능으로 간주
+      .then(hashedPassword => {
+        const user = new User({
+          email: email, 
+          password: hashedPassword, 
+          cart: { items: [] } 
+        }); 
+        return user.save();
+      })
+      .then(result => {
+        res.redirect('/login');
       }); 
-      return user.save();
-    })
-    .then(result => {
-      res.redirect('/login');
     })
     .catch(err => {
         console.log(err);
