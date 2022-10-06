@@ -37,8 +37,8 @@ exports.postLogin = (req, res, next) => {
 
 // 회원가입 기능
 exports.postSignup = (req, res, next) => {
-  const email = req.body.email; 
-  const password = req.body.password; 
+  const email = req.body.email;
+  const password = req.body.password;
   const confirmPassword = req.body.confirmPassword;
   User
     .findOne({email: email})
