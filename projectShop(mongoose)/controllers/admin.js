@@ -5,8 +5,8 @@ exports.getAddProduct = (req, res, next) => {
   res.render('admin/edit-product', {
     pageTitle: 'Add Product',
     path: '/admin/add-product',
-    editing: false, 
-    isAuthenticated: req.isLoggedIn
+    editing: false,
+    isAuthenticated: req.session.isLoggedIn
   });
 };
 
@@ -47,8 +47,8 @@ exports.getEditProduct = (req, res, next) => {
         pageTitle: 'Edit Product',
         path: '/admin/edit-product',
         editing: editMode,
-        product: product, 
-        isAuthenticated: req.isLoggedIn
+        product: product,
+        isAuthenticated: req.session.isLoggedIn
       });
     })
     .catch(err => console.log(err));
@@ -66,8 +66,8 @@ exports.postEditProduct = (req, res, next) => {
     .then(product => {
       product.title = updatedTitle;
       product.price = updatedPrice;
-      product.imageUrl = updatedImageUrl;
       product.description = updatedDesc;
+      product.imageUrl = updatedImageUrl;
       return product.save();
       // 기존에 있는 객체에 save 호출하여 업데이트 해준 것 
     })
@@ -97,7 +97,7 @@ exports.getProducts = (req, res, next) => {
         prods: products,
         pageTitle: 'Admin Products',
         path: '/admin/products',
-        isAuthenticated: req.isLoggedIn
+        isAuthenticated: req.session.isLoggedIn
       });
     })
     .catch(err => console.log(err));

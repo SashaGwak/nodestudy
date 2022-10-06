@@ -21,14 +21,12 @@ router.get('/cart', shopController.getCart);
 router.post('/cart', shopController.postCart);
 
 // 장바구니 삭제 기능
-router.post('/cart-delete-item', shopController.postCartDelete);
+router.post('/cart-delete-item', shopController.postCartDeleteProduct);
 
 // 주문 기능
 router.post('/create-order', shopController.postOrder);
 
 // 주문 페이지
 router.get('/orders', shopController.getOrders);
-
-router.get('/checkout', shopController.getCheckout);
 
 module.exports = router;
