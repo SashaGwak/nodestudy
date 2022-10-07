@@ -7,7 +7,7 @@ const app = express();
 /* DB */
 const mongoose = require('mongoose');
 const User = require('./models/user');
-const MONGODB_URI = 'mongodb+srv://poemha:Mini1028!@clustertest.bwpwhd8.mongodb.net/';
+const MONGODB_URI = 'mongodb+srv://poemha:<password>!@clustertest.bwpwhd8.mongodb.net/';
 
 /* session */
 const session = require('express-session');
